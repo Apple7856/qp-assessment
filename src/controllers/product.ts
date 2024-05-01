@@ -32,6 +32,7 @@ export const getProducts = async (req: Request, res: Response) => {
         const productRepo = AppDataSource.getRepository(Product);
         const productsData = await productRepo.createQueryBuilder('product')
             .leftJoinAndSelect('product.user', 'user')
+            .where({ isAvailable: true })
             .select(['product', 'user.id', 'user.firstname', "user.lastname", "user.email", "user.mobile_no", "user.admin"])
             .getMany();
         res.status(200).json({ data: productsData });
